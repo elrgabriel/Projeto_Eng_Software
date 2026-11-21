@@ -1,0 +1,31 @@
+
+Info de acordo com os powerpoints
+
+Reserva de salas - Faculdade
+
+    Dificuldades principais(Conflitos de horario, prioridades, cancelamentos)
+
+Etapas - Acho que as datas ja nao estao de acordo com o powerpoint confirmar depois.
+
+    E0 30 Out - grupo e dominio
+    E1 13 Nov - Visao e plano
+    E2 27 Nov - Requisitos
+    E3 18 Dez - Design e testes com checkpoint oral
+    E4 25 Jan - Sistema final 
+    Defesa na aula - 27/28 Jan 
+
+Avaliaçao - peso - o que conta
+
+    E1 - 10% - Riscos concretos, processo justificado
+    E2 - 20% - Requisitos verificaveis 
+    E3 - 20% - Coerencia entre artefacto 
+    E4 - 30% - Testes, defeitos, mudança
+    Defesa - 20% - Dominio do que foi entregue
+
+Regras de utilizaçao de AI 
+
+    Ferramentas livres 
+    Uso declarado
+    Sem dados pessoais
+    Sem segredos
+    Historico verdadeiro
