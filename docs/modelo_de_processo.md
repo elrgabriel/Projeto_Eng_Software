@@ -1,0 +1,134 @@
+# 4. Modelo de processo escolhido e justificação
+
+**Projeto:** Reserva de salas da Faculdade
+**Entrega:** E1 — Visão e plano (ficheiro: `docs/modelo_de_processo.md`)
+
+---
+
+## 4.1 Decisão
+
+**Modelo escolhido: iterativo e incremental, gerido com Scrum e com práticas técnicas de XP.**
+
+| Camada | O que usamos | Para quê no nosso projeto |
+|---|---|---|
+| Modelo de processo | Iterativo e incremental | Entregar o sistema por partes e corrigir o rumo com feedback a cada ciclo |
+| Framework de gestão | Scrum (Sprints, Product Backlog, Sprint Review, Retrospetiva) | Organizar o trabalho do grupo e tornar visível o progresso |
+| Práticas técnicas | TDD, revisão por pares, integração contínua (XP) | Garantir que a lógica de conflitos e prioridades está correta |
+
+---
+
+## 4.2 Porquê este modelo: o contexto do nosso projeto
+
+A escolha parte das três dificuldades principais do domínio: **conflitos de horário, prioridades e cancelamentos**.
+
+### a) As regras de prioridade ainda não são conhecidas
+O sistema só funciona se soubermos quem ganha quando dois pedidos disputam a mesma sala (aula curricular, exame, reunião, evento de associação de estudantes). Essas regras vão ser negociadas com stakeholders que têm interesses opostos. Por exemplo, os docentes querem reservar com meses de antecedência e os serviços querem libertar as salas à semana. Este conflito está identificado na análise de stakeholders (ponto 2).
+
+Requisitos que só se compreendem a negociar não podem ficar fechados num documento no início. Num processo iterativo, a primeira versão serve para **validar** esses requisitos (a aula 3 refere isto expressamente), e cada Sprint Review permite ajustar a ordem de prioridade com quem decide.
+
+### b) A parte mais difícil tecnicamente é a que mais vai mudar
+Detetar conflitos de horário (sobreposições, salas com capacidade insuficiente, reservas recorrentes) e gerir cancelamentos (libertar a sala, reatribuir a quem estava em espera) é a lógica central do sistema. Erros aqui tornam o sistema inútil: uma sala reservada duas vezes é pior do que não ter sistema.
+
+Com ciclos curtos, esta lógica é construída e testada **logo no primeiro Sprint**, e não só no fim do semestre. O erro mais caro é descoberto cedo, quando ainda é barato corrigi-lo.
+
+### c) Separar funcionalidade de política de negócio
+Seguimos o princípio da aula 4: "cancelar" é uma funcionalidade; "só se pode cancelar até X horas antes" ou "uma aula curricular prevalece sobre um evento" são **regras de negócio** que podem mudar sem mudar a funcionalidade. Num modelo iterativo, cada regra entra no backlog como item próprio, com critérios de aceitação testáveis, e pode ser alterada num Sprint seguinte sem refazer o sistema.
+
+### d) Os utilizadores existem e podem validar
+Alunos, docentes e serviços académicos são utilizadores reais e acessíveis. Um modelo iterativo exige um cliente disponível a cada ciclo, e neste domínio isso é possível: cada Sprint Review pode ser feita com um representante de cada grupo.
+
+### e) O prazo é um semestre e a equipa é pequena e inexperiente
+Temos um prazo fixo e curto, e uma equipa de estudantes. Isto favorece **âmbito variável** (a característica ágil de fixar prazo e custo e ajustar o que se entrega): se faltar tempo, adiamos os itens *Could* e nunca a qualidade nem a funcionalidade *Must*. Ao fim de cada Sprint existe sempre uma versão utilizável, o que protege o grupo de chegar ao fim com um sistema incompleto.
+
+### f) Uso de IA no desenvolvimento
+O grupo usa IA para gerar código e rascunhos de histórias. A aula 4 alerta que, quando gerar código fica barato, **verificar** passa a ser o passo crítico. Por isso a nossa Definition of Done inclui: código gerado por IA lido e revisto por uma pessoa, testes automáticos a passar e pull request aprovado por outro membro. O TDD funciona como barreira: o teste é escrito por quem conhece a regra (por exemplo, "duas reservas não podem sobrepor-se") e valida o que a IA gerou. Isto responde diretamente aos riscos ligados à IA do registo de riscos (ponto 3).
+
+---
+
+## 4.3 Plano de incrementos (como o modelo se aplica ao projeto)
+
+A ordem dos Sprints segue o **risco e o valor**: primeiro o que é mais difícil e mais essencial.
+
+| Incremento | Foco | Porquê nesta ordem |
+|---|---|---|
+| Sprint 0 | Protótipo de baixa fidelidade (wireframes) dos ecrãs de reserva e de conflito; validação das regras de prioridade com stakeholders | Os requisitos de prioridade estão mal compreendidos; um protótipo descartável clarifica antes de programar |
+| Sprint 1 | Criar reserva + **deteção de conflitos de horário** | É o núcleo do sistema e o maior risco técnico |
+| Sprint 2 | **Cancelamentos** e libertação da sala | Depende de já existirem reservas e conflitos bem definidos |
+| Sprint 3 | **Regras de prioridade** entre tipos de utilizador/atividade | Precisa de feedback real dos Sprints 1 e 2 para afinar as regras |
+| Sprint 4+ | Notificações, consulta de disponibilidade, melhorias de interface | Valor adicional (*Should*/*Could*); entra se houver capacidade |
+
+Em cada Sprint, o ecrã e as regras já entregues podem ser **refeitos** com base no feedback (a vertente iterativa), enquanto se acrescentam funcionalidades novas (a vertente incremental).
+
+---
+
+## 4.4 Comparação com alternativas
+
+### Alternativa 1 — Cascata (e cascata revisto)
+
+| Aspeto | Cascata | O que isto significa para o nosso projeto |
+|---|---|---|
+| Requisitos | Fechados e assinados no início | Teríamos de fixar as regras de prioridade antes de falarmos com quem as decide |
+| Feedback | Só no fim, quando o software existe | Descobriríamos que a deteção de conflitos falha na última semana |
+| Mudança | Difícil de acomodar | Qualquer alteração à política de cancelamentos obrigaria a rever fases anteriores |
+| Documentação | Extensa | Útil, mas excessiva para um grupo pequeno e um prazo de um semestre |
+
+**Porque a rejeitámos:** o cascata é adequado a requisitos estáveis e a contextos regulados, e o nosso domínio tem o oposto: prioridades por negociar e interesses em conflito. O cascata revisto atenua o problema, mas continua a deixar o cliente sem ver software a funcionar até ao fim.
+**O que aproveitamos:** a disciplina de documentar o essencial (visão, riscos, regras de negócio escritas e rastreáveis).
+
+### Alternativa 2 — Espiral (Boehm)
+
+| Aspeto | Espiral | O que isto significa para o nosso projeto |
+|---|---|---|
+| Gestão de risco | Análise formal de risco em cada volta | Adequada em teoria, dado que temos riscos reais |
+| Custo e estrutura | Custo inicial elevado; exige gestão de risco experiente | A equipa é de estudantes, sem experiência em análise formal de risco |
+| Dimensão do projeto | Pouco eficaz em projetos pequenos | Teria demasiada estrutura para o nosso âmbito |
+
+**Porque a rejeitámos:** é indicada para projetos longos, caros e de alto risco (a aula usa o controlo de tráfego aéreo como exemplo). O nosso risco é real mas **gerível**, e o custo do processo seria desproporcionado.
+**O que aproveitamos:** a ideia de começar cada ciclo por rever os riscos. Fazemo-lo de forma leve, revendo o registo de riscos em cada Sprint Planning e Retrospetiva.
+
+### Alternativa 3 — RUP
+
+| Aspeto | RUP | O que isto significa para o nosso projeto |
+|---|---|---|
+| Estrutura | 4 fases, 9 disciplinas, muitos papéis formais | Pesado para uma equipa pequena |
+| Documentação | Extensa e rastreável | Consumiria tempo que precisamos para construir e testar |
+| Indicado para | Projetos grandes e complexos, com grandes equipas | Não é o nosso caso |
+
+**Porque a rejeitámos:** não é ágil e é desenhado para outra escala de equipa e de projeto.
+
+### Quadro-resumo
+
+| Critério | Cascata | Espiral | RUP | **Iterativo + Scrum/XP** |
+|---|---|---|---|---|
+| Lida bem com regras de prioridade ainda por definir | Não | Sim | Parcialmente | **Sim** |
+| Feedback frequente de utilizadores reais | Não (só no fim) | Sim | Sim | **Sim (cada Sprint Review)** |
+| Adequado a equipa pequena e prazo de um semestre | Parcialmente | Não | Não | **Sim** |
+| Protege contra falhas no núcleo (conflitos de horário) | Tarde demais | Sim, mas com custo elevado | Sim, mas com muito formalismo | **Sim, logo no Sprint 1** |
+| Permite reduzir âmbito sem perder qualidade | Difícil | Difícil | Difícil | **Sim (prioridade MoSCoW)** |
+| Integra verificação do código gerado por IA | Só na fase de testes | Dependente da volta | Dependente da fase | **Sim (DoD + TDD a cada Sprint)** |
+
+---
+
+## 4.5 Riscos desta escolha e como os gerimos
+
+| Risco do modelo | Mitigação |
+|---|---|
+| Difícil estimar custo e prazo totais no início | Prioridade MoSCoW: fixamos o prazo e ajustamos o âmbito; os itens *Won't* ficam registados |
+| Arquitetura degradar-se a cada incremento | Refactoring frequente e revisão por pares; decisões de arquitetura discutidas em equipa |
+| Exige cliente/stakeholder disponível em cada ciclo | Definir à partida um representante por grupo de utilizadores e fixar as datas das Sprint Reviews |
+| Mudança descontrolada das regras de prioridade | Mudanças entram no Product Backlog através do Product Owner e só se aplicam a Sprints futuros, nunca a meio de um Sprint |
+
+---
+
+## 4.6 Como saberemos que o processo está a funcionar
+
+- Cada Sprint termina com um **incremento utilizável** que cumpre a Definition of Done.
+- Em cada Sprint Review demonstramos **software a funcionar** (não slides) a pelo menos um stakeholder.
+- Em cada Retrospetiva registamos pelo menos **uma ação concreta** de melhoria para o Sprint seguinte.
+- Se uma regra de prioridade ou de cancelamento mudar, confirmamos que o impacto ficou limitado a **um item do backlog** e não a uma reescrita (sinal de que separámos bem funcionalidade e política).
+
+---
+
+## Nota final
+
+Não existe um modelo "melhor" em abstrato: escolhemos este porque as três dificuldades do nosso domínio (conflitos de horário, prioridades e cancelamentos) dependem de regras que só se estabilizam com feedback, e porque o núcleo técnico precisa de ser testado cedo. Se o contexto mudasse (por exemplo, se a Faculdade impusesse regras fixas e documentação formal), reavaliaríamos a escolha.
