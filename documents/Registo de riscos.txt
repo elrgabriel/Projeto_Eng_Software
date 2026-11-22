@@ -34,7 +34,7 @@ Este documento formaliza o processo contínuo de gestão de riscos do sistema de
 ---
 
 ### 1.2. Tipologia de Estratégias de Gestão de Risco
-* **Evitar:** Eliminar a causa-raiz ou redesenhar a arquitetura e fluxos de negócio para neutralizar o risco.
+* **Evitar:** Eliminar a causa-raiz ou redesenhar a arquitetura e fluxos de negócio para mitigar o risco.
 * **Mitigar:** Implementar ações preventivas para diminuir a probabilidade de ocorrência ou atenuar o impacto caso ocorra.
 * **Transferir:** Alocar a responsabilidade operacional ou de suporte a serviços externos ou entidades terceiras.
 * **Aceitar:** Reconhecer a possibilidade do risco e definir um plano de contingência acionável caso se justifique pelo custo/benefício.
